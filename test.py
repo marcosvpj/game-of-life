@@ -34,6 +34,17 @@ class TestMain(unittest.TestCase):
 
         self.assertEqual(3, neighbours_alive)
 
+    def testCountNeighboursCellsAliveWhenCornerCell(self):
+        self.board[0] = [1, 1, 0]
+        self.board[1] = [0, 1, 1]
+        self.board[2] = [0, 0, 0]
+
+        with self.subTest():
+            self.assertEqual(2, main.count_alive((2, 2), self.board))
+            self.assertEqual(2, main.count_alive((0, 0), self.board))
+            self.assertEqual(3, main.count_alive((0, 2), self.board))
+            self.assertEqual(1, main.count_alive((2, 0), self.board))
+
     def testIsAliveWhenAlive(self):
         """Given a board and a cell coordenate, return True when the cell is alive"""
         cell_coord = (1, 1)
@@ -102,6 +113,24 @@ class TestMain(unittest.TestCase):
         board = main.refresh_cell(cell_coord, self.board)
 
         self.assertTrue(main.is_alive(cell_coord, board))
+
+    def testIsValidCellReturnFalseWhenInvalidCell(self):
+        self.board[0] = [1, 1, 0]
+        self.board[1] = [0, 0, 0]
+        self.board[2] = [0, 0, 1]
+
+        positions_false = [(4, 1), (-1, 1), (1, 4), (1, -1), (3, 3)]
+
+        for pos in positions_false:
+            with self.subTest():
+                self.assertFalse(main.is_valid_cell(pos, self.board))
+
+    def testIsValidCellReturnTrueWhenValidCell(self):
+        self.board[0] = [1, 1, 0]
+        self.board[1] = [0, 0, 0]
+        self.board[2] = [0, 0, 1]
+
+        self.assertTrue(main.is_valid_cell((1, 1), self.board))
 
 
 if __name__ == '__main__':

@@ -5,40 +5,61 @@ def title():
 def main():
     print(title())
     board = [
-        [0,0,0],
-        [1,1,1],
-        [0,0,0]
+        [0, 0, 0],
+        [1, 1, 1],
+        [0, 0, 0]
     ]
     line = ''
 
-    #while 1 == 1:
-    for y in range(len(board)):
-        for x in range(len(board[y])):
-            line = line + str(board[y][x])
-            coord = (y, x)
-            refresh_cell(coord, board)
-        
-        print(line)
-        line = ''
+    for n in range(10):
+        for y in range(len(board)):
+            for x in range(len(board[y])):
+                line += str(board[y][x])
+                coord = (y, x)
+                refresh_cell(coord, board)
 
-    #for y in board:
-    #    for x in y:
-    #        refreshCell()
+            print(line)
+            line = ''
+        print('')
+
+        # for y in board:
+        #    for x in y:
+        #        refreshCell()
 
 
 def count_alive(coord, board):
     alive = 0
-    
-    if coord[0] > 0 and coord[1] > 0 and (is_alive((coord[0]-1, coord[1]-1), board)): alive += 1
-    if coord[0] > 0 and (is_alive((coord[0]-1, coord[1]), board)): alive += 1
-    if coord[0] > 0 and coord[1] < len(board[coord[0]]) and (is_alive((coord[0]-1, coord[1]+1), board)): alive += 1
-    
-    if is_alive((coord[0], coord[1]-1), board): alive += 1
-    if is_alive((coord[0], coord[1]+1), board): alive += 1
-    
-    if is_alive((coord[0]+1, coord[1]-1), board): alive += 1
-    if is_alive((coord[0]+1, coord[1]), board): alive += 1
-    if is_alive((coord[0]+1, coord[1]+1), board): alive += 1
+
+    pos = (coord[0] - 1, coord[1] - 1)
+    if is_valid_cell(pos, board) and (is_alive(pos, board)):
+        alive += 1
+
+    if coord[0] > 0 and (is_alive((coord[0] - 1, coord[1]), board)):
+        alive += 1
+
+    pos = (coord[0] - 1, coord[1] + 1)
+    if is_valid_cell(pos, board) and is_alive(pos, board):
+            alive += 1
+
+    pos = (coord[0], coord[1] - 1)
+    if is_valid_cell(pos, board) and is_alive(pos, board):
+        alive += 1
+
+    pos = (coord[0], coord[1] + 1)
+    if is_valid_cell(pos, board) and is_alive(pos, board):
+            alive += 1
+
+    pos = (coord[0] + 1, coord[1] - 1)
+    if is_valid_cell(pos, board) and is_alive(pos, board):
+        alive += 1
+
+    pos = (coord[0] + 1, coord[1])
+    if is_valid_cell(pos, board) and is_alive(pos, board):
+        alive += 1
+
+    pos = (coord[0] + 1, coord[1] + 1)
+    if  is_valid_cell(pos, board) and is_alive(pos, board):
+        alive += 1
 
     return alive
 
@@ -46,7 +67,7 @@ def count_alive(coord, board):
 def is_alive(coord, board):
     if board[coord[0]][coord[1]] == 0:
         return False
-    
+
     return True
 
 
@@ -61,6 +82,22 @@ def refresh_cell(coord, board):
             board[coord[0]][coord[1]] = 1
 
     return board
+
+
+def is_valid_cell(coord, board):
+    if coord[0] >= len(board):
+        return False
+
+    if coord[0] < 0:
+        return False
+
+    if coord[1] < 0:
+        return False
+
+    if coord[1] >= len(board[coord[0]]):
+        return False
+
+    return True
 
 
 if __name__ == '__main__':
