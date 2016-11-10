@@ -14,50 +14,36 @@ class TestMain(unittest.TestCase):
     def testTitleReturnGameOfLife(self):
         self.assertEqual('Game of Life', main.title())
 
-    def testCountNeighboursCellsAliveWhen0Alive(self):
-        """Given a cell with no alive neighbours return the 0"""
-        self.board[0] = [0, 0, 0]
+    def testCountAlive(self):
+        self.board[0] = [1, 1, 0, 1, 1]
+        self.board[1] = [0, 0, 1, 1, 1]
+        self.board[2] = [0, 0, 0, 0, 1]
+
+        data = [
+            {'expect': 2, 'position': (2, 2)},
+            {'expect': 1, 'position': (0, 0)},
+            {'expect': 4, 'position': (0, 2)},
+            {'expect': 0, 'position': (2, 0)},
+            {'expect': 3, 'position': (1, 1)},
+        ]
+
+        for d in data:
+            with self.subTest():
+                self.assertEqual(d['expect'], main.count_alive(d['position'], self.board))
+
+    def testIsAliveWhenAlive(self):
+        self.board[0] = [1, 0, 0]
         self.board[1] = [0, 1, 0]
         self.board[2] = [0, 0, 0]
 
-        neighbours_alive = main.count_alive((1, 1), self.board)
+        data = [
+            {'pos': (1, 1), 'expected': True},
+            {'pos': (2, 2), 'expected': False}
+        ]
 
-        self.assertEqual(0, neighbours_alive)
-
-    def testCountNeighboursCellsAliveWhen3Alive(self):
-        """Given a cell with 1 alive neighbours return the 3"""
-        self.board[0] = [1, 1, 0]
-        self.board[1] = [0, 1, 1]
-        self.board[2] = [0, 0, 0]
-
-        neighbours_alive = main.count_alive((1, 1), self.board)
-
-        self.assertEqual(3, neighbours_alive)
-
-    def testCountNeighboursCellsAliveWhenCornerCell(self):
-        self.board[0] = [1, 1, 0]
-        self.board[1] = [0, 1, 1]
-        self.board[2] = [0, 0, 0]
-
-        with self.subTest():
-            self.assertEqual(2, main.count_alive((2, 2), self.board))
-            self.assertEqual(2, main.count_alive((0, 0), self.board))
-            self.assertEqual(3, main.count_alive((0, 2), self.board))
-            self.assertEqual(1, main.count_alive((2, 0), self.board))
-
-    def testIsAliveWhenAlive(self):
-        """Given a board and a cell coordenate, return True when the cell is alive"""
-        cell_coord = (1, 1)
-        self.board[1][1] = 1
-
-        self.assertTrue(main.is_alive(cell_coord, self.board))
-
-    def testIsAliveWhenDead(self):
-        """Given a board and a cell coordenate, return False when the cell is dead"""
-        cell_coord = (1, 1)
-        self.board[1][1] = 0
-
-        self.assertFalse(main.is_alive(cell_coord, self.board))
+        for d in data:
+            with self.subTest():
+                self.assertEqual(d['expected'], main.is_alive(d['pos'], self.board))
 
     def testDeadWithLessThan2NeighboursAlive(self):
         self.board[0] = [1, 0, 0]
