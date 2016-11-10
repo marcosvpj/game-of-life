@@ -12,15 +12,18 @@ def main():
     line = ''
 
     for n in range(10):
+        board2 = board
         for y in range(len(board)):
             for x in range(len(board[y])):
                 line += str(board[y][x])
                 coord = (y, x)
-                refresh_cell(coord, board)
+                board2[y][x] = refresh_cell(coord, board)
 
             print(line)
             line = ''
         print('')
+
+        board = board2
 
         # for y in board:
         #    for x in y:
@@ -34,7 +37,8 @@ def count_alive(coord, board):
     if is_valid_cell(pos, board) and (is_alive(pos, board)):
         alive += 1
 
-    if coord[0] > 0 and (is_alive((coord[0] - 1, coord[1]), board)):
+    pos = (coord[0] - 1, coord[1])
+    if is_valid_cell(pos, board) and (is_alive(pos, board)):
         alive += 1
 
     pos = (coord[0] - 1, coord[1] + 1)
@@ -58,7 +62,7 @@ def count_alive(coord, board):
         alive += 1
 
     pos = (coord[0] + 1, coord[1] + 1)
-    if  is_valid_cell(pos, board) and is_alive(pos, board):
+    if is_valid_cell(pos, board) and is_alive(pos, board):
         alive += 1
 
     return alive
@@ -76,12 +80,10 @@ def refresh_cell(coord, board):
 
     if is_alive(coord, board):
         if alive < 2 or alive > 3:
-            board[coord[0]][coord[1]] = 0
+            return 0
     else:
         if alive == 3:
-            board[coord[0]][coord[1]] = 1
-
-    return board
+            return 1
 
 
 def is_valid_cell(coord, board):
