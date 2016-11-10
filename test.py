@@ -48,7 +48,7 @@ class TestMain(unittest.TestCase):
     def testRefreshCell(self):
         self.board[0] = [0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 0, 1, 1]
         self.board[1] = [0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1, 0, 0, 1, 1]
-        self.board[2] = {0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 1, 1}
+        self.board[2] = [0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 1, 1]
 
         cell_coord = (1, 1)
 
@@ -65,9 +65,6 @@ class TestMain(unittest.TestCase):
             with self.subTest():
                 new_cell_value = main.refresh_cell(d['pos'], self.board)
                 self.assertEqual(d['expected'], new_cell_value)
-                # self.board[cell_coord[0]][cell_coord[1]] = main.refresh_cell(cell_coord, self.board)
-
-                # self.assertFalse(main.is_alive(cell_coord, self.board))
 
     def testDeadWithLessThan2NeighboursAlive(self):
         self.board[0] = [1, 0, 0]
