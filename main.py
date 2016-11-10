@@ -3,31 +3,57 @@ def title():
 
 
 def main():
+    import os
+    import time
     print(title())
-    board = [
-        [0, 0, 0],
-        [1, 1, 1],
-        [0, 0, 0]
-    ]
+    board = [[0 for x in range(100)] for y in range(25)]
+    board[5][5] = 1
+    board[5][6] = 1
+    board[5][7] = 1
+    board[5][8] = 0
+    board[5][9] = 1
+
+    board[6][5] = 1
+    board[6][6] = 0
+    board[6][7] = 0
+    board[6][8] = 0
+    board[6][9] = 0
+
+    board[7][5] = 0
+    board[7][6] = 0
+    board[7][7] = 0
+    board[7][8] = 1
+    board[7][9] = 1
+
+    board[8][5] = 0
+    board[8][6] = 1
+    board[8][7] = 1
+    board[8][8] = 0
+    board[8][9] = 1
+
+    board[9][5] = 1
+    board[9][6] = 0
+    board[9][7] = 1
+    board[9][8] = 0
+    board[9][9] = 1
+
     line = ''
 
-    for n in range(10):
+    while True:
+        os.system('clear')
         board2 = board
         for y in range(len(board)):
             for x in range(len(board[y])):
-                line += str(board[y][x])
-                coord = (y, x)
-                board2[y][x] = refresh_cell(coord, board)
+                if board[y][x] == 0:
+                    line += ' '
+                else:
+                    line += '.'
 
             print(line)
             line = ''
-        print('')
 
-        board = board2
-
-        # for y in board:
-        #    for x in y:
-        #        refreshCell()
+        time.sleep(.6)
+        board = refresh_board(board)
 
 
 def count_alive(coord, board):
