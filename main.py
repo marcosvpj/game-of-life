@@ -62,13 +62,13 @@ def refresh_cell(coord, board):
     alive = count_alive(coord, board)
 
     if is_alive(coord, board):
-        if alive < 2 or alive > 3:
-            return 0
+        if alive == 2 or alive == 3:
+            return 1
     else:
         if alive == 3:
             return 1
 
-    return board[coord[0]][coord[1]]
+    return 0
 
 
 def is_valid_cell(coord, board):
@@ -85,6 +85,16 @@ def is_valid_cell(coord, board):
         return False
 
     return True
+
+
+def refresh_board(board):
+    next_board = [[0 for x in range(len(board[0]))] for y in range(len(board))]
+    for y in range(len(board)):
+        for x in range(len(board[y])):
+            coord = (y, x)
+            next_board[y][x] = refresh_cell(coord, board)
+
+    return next_board
 
 
 if __name__ == '__main__':
