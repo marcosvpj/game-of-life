@@ -16,7 +16,7 @@ def main():
         for x in range(len(board[y])):
             line = line + str(board[y][x])
             coord = (y, x)
-            refreshCell(coord, board)
+            refresh_cell(coord, board)
         
         print(line)
         line = ''
@@ -26,34 +26,34 @@ def main():
     #        refreshCell()
 
 
-def countAlive(coord, board):
+def count_alive(coord, board):
     alive = 0
     
-    if coord[0] > 0 and coord[1] > 0 and (isAlive((coord[0]-1, coord[1]-1), board)): alive += 1
-    if coord[0] > 0 and (isAlive((coord[0]-1, coord[1]), board)): alive += 1
-    if coord[0] > 0 and coord[1] < len(board[coord[0]]) and (isAlive((coord[0]-1, coord[1]+1), board)): alive += 1
+    if coord[0] > 0 and coord[1] > 0 and (is_alive((coord[0]-1, coord[1]-1), board)): alive += 1
+    if coord[0] > 0 and (is_alive((coord[0]-1, coord[1]), board)): alive += 1
+    if coord[0] > 0 and coord[1] < len(board[coord[0]]) and (is_alive((coord[0]-1, coord[1]+1), board)): alive += 1
     
-    if (isAlive((coord[0], coord[1]-1), board)): alive += 1
-    if (isAlive((coord[0], coord[1]+1), board)): alive += 1
+    if is_alive((coord[0], coord[1]-1), board): alive += 1
+    if is_alive((coord[0], coord[1]+1), board): alive += 1
     
-    if (isAlive((coord[0]+1, coord[1]-1), board)): alive += 1
-    if (isAlive((coord[0]+1, coord[1]), board)): alive += 1
-    if (isAlive((coord[0]+1, coord[1]+1), board)): alive += 1
+    if is_alive((coord[0]+1, coord[1]-1), board): alive += 1
+    if is_alive((coord[0]+1, coord[1]), board): alive += 1
+    if is_alive((coord[0]+1, coord[1]+1), board): alive += 1
 
     return alive
 
 
-def isAlive(coord, board):
+def is_alive(coord, board):
     if board[coord[0]][coord[1]] == 0:
         return False
     
     return True
 
 
-def refreshCell(coord, board):
-    alive = countAlive(coord, board)
+def refresh_cell(coord, board):
+    alive = count_alive(coord, board)
 
-    if isAlive(coord, board):
+    if is_alive(coord, board):
         if alive < 2 or alive > 3:
             board[coord[0]][coord[1]] = 0
     else:
