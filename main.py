@@ -33,36 +33,19 @@ def main():
 def count_alive(coord, board):
     alive = 0
 
-    pos = (coord[0] - 1, coord[1] - 1)
-    if is_valid_cell(pos, board) and (is_alive(pos, board)):
-        alive += 1
+    pos = [
+        (coord[0], coord[1] - 1),
+        (coord[0], coord[1] + 1),
+        (coord[0] - 1, coord[1]),
+        (coord[0] - 1, coord[1] - 1),
+        (coord[0] - 1, coord[1] + 1),
+        (coord[0] + 1, coord[1]),
+        (coord[0] + 1, coord[1] - 1),
+        (coord[0] + 1, coord[1] + 1)
+    ]
 
-    pos = (coord[0] - 1, coord[1])
-    if is_valid_cell(pos, board) and (is_alive(pos, board)):
-        alive += 1
-
-    pos = (coord[0] - 1, coord[1] + 1)
-    if is_valid_cell(pos, board) and is_alive(pos, board):
-            alive += 1
-
-    pos = (coord[0], coord[1] - 1)
-    if is_valid_cell(pos, board) and is_alive(pos, board):
-        alive += 1
-
-    pos = (coord[0], coord[1] + 1)
-    if is_valid_cell(pos, board) and is_alive(pos, board):
-            alive += 1
-
-    pos = (coord[0] + 1, coord[1] - 1)
-    if is_valid_cell(pos, board) and is_alive(pos, board):
-        alive += 1
-
-    pos = (coord[0] + 1, coord[1])
-    if is_valid_cell(pos, board) and is_alive(pos, board):
-        alive += 1
-
-    pos = (coord[0] + 1, coord[1] + 1)
-    if is_valid_cell(pos, board) and is_alive(pos, board):
+    for p in pos:
+        if is_valid_cell(p, board) and (is_alive(p, board)):
             alive += 1
 
     return alive
