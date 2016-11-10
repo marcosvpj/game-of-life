@@ -63,7 +63,7 @@ def count_alive(coord, board):
 
     pos = (coord[0] + 1, coord[1] + 1)
     if is_valid_cell(pos, board) and is_alive(pos, board):
-        alive += 1
+            alive += 1
 
     return alive
 
@@ -84,6 +84,8 @@ def refresh_cell(coord, board):
     else:
         if alive == 3:
             return 1
+
+    return board[coord[0]][coord[1]]
 
 
 def is_valid_cell(coord, board):
