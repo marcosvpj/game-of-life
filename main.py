@@ -41,7 +41,6 @@ def main():
 
     while True:
         os.system('clear')
-        board2 = board
         for y in range(len(board)):
             for x in range(len(board[y])):
                 if board[y][x] == 0:

@@ -141,15 +141,15 @@ class TestMain(unittest.TestCase):
 
     def testRefreshBoard(self):
         step1 = [
-            [0,0,0],
-            [0,1,0],
-            [0,0,0]
+            [0, 0, 0],
+            [0, 1, 0],
+            [0, 0, 0]
         ]
 
         step2 = [
-            [0,0,0],
-            [0,0,0],
-            [0,0,0]
+            [0, 0, 0],
+            [0, 0, 0],
+            [0, 0, 0]
         ]
 
         next_step = main.refresh_board(step1)
@@ -157,15 +157,15 @@ class TestMain(unittest.TestCase):
 
     def testRefreshBoard2(self):
         step1 = [
-            [0,1,0],
-            [1,1,0],
-            [0,0,0]
+            [0, 1, 0],
+            [1, 1, 0],
+            [0, 0, 0]
         ]
 
         step2 = [
-            [1,1,0],
-            [1,1,0],
-            [0,0,0]
+            [1, 1, 0],
+            [1, 1, 0],
+            [0, 0, 0]
         ]
 
         next_step = main.refresh_board(step1)
@@ -173,19 +173,20 @@ class TestMain(unittest.TestCase):
 
     def testRefreshBoard4(self):
         step1 = [
-            [0,0,0],
-            [1,1,1],
-            [0,0,0]
+            [0, 0, 0],
+            [1, 1, 1],
+            [0, 0, 0]
         ]
 
         step2 = [
-            [0,1,0],
-            [0,1,0],
-            [0,1,0]
+            [0, 1, 0],
+            [0, 1, 0],
+            [0, 1, 0]
         ]
 
         next_step = main.refresh_board(step1)
         self.assertEqual(next_step, step2)
+
 
 if __name__ == '__main__':
     unittest.main()
