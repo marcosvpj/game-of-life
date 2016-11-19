@@ -1,5 +1,8 @@
 ##Game of Life
 
+[![Code Health](https://landscape.io/github/marcosvpj/game-of-life/master/landscape.svg?style=flat-square)](https://landscape.io/github/marcosvpj/game-of-life/master)
+
+
 ![Game of life](/game-of-life-crop.gif)
 
 ##Descrição
