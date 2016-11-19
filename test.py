@@ -152,7 +152,7 @@ class TestMain(unittest.TestCase):
             [0, 0, 0]
         ]
 
-        next_step = main.refresh_board(step1)
+        next_step = main.generate_next_generation(step1)
         self.assertEqual(next_step, step2)
 
     def testRefreshBoard2(self):
@@ -168,7 +168,7 @@ class TestMain(unittest.TestCase):
             [0, 0, 0]
         ]
 
-        next_step = main.refresh_board(step1)
+        next_step = main.generate_next_generation(step1)
         self.assertEqual(next_step, step2)
 
     def testRefreshBoard4(self):
@@ -184,7 +184,7 @@ class TestMain(unittest.TestCase):
             [0, 1, 0]
         ]
 
-        next_step = main.refresh_board(step1)
+        next_step = main.generate_next_generation(step1)
         self.assertEqual(next_step, step2)
 
 
