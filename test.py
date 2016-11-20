@@ -1,4 +1,6 @@
 import unittest
+
+import game_of_life
 import main
 
 
@@ -10,9 +12,6 @@ class TestMain(unittest.TestCase):
         self.board[0] = [0, 0, 0]
         self.board[1] = [0, 0, 0]
         self.board[2] = [0, 0, 0]
-
-    def testTitleReturnGameOfLife(self):
-        self.assertEqual('Game of Life', main.title())
 
     def testCountAlive(self):
         self.board[0] = [1, 1, 0, 1, 1]
@@ -29,7 +28,7 @@ class TestMain(unittest.TestCase):
 
         for d in data:
             with self.subTest():
-                self.assertEqual(d['expect'], main.count_alive(d['position'], self.board))
+                self.assertEqual(d['expect'], game_of_life.count_alive(d['position'], self.board))
 
     def testIsAliveWhenAlive(self):
         self.board[0] = [1, 0, 0]
@@ -43,7 +42,7 @@ class TestMain(unittest.TestCase):
 
         for d in data:
             with self.subTest():
-                self.assertEqual(d['expected'], main.is_alive(d['pos'], self.board))
+                self.assertEqual(d['expected'], game_of_life.is_alive(d['pos'], self.board))
 
     def testRefreshCell(self):
         self.board[0] = [0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 0, 1, 1]
@@ -63,7 +62,7 @@ class TestMain(unittest.TestCase):
 
         for d in data:
             with self.subTest():
-                new_cell_value = main.refresh_cell(d['pos'], self.board)
+                new_cell_value = game_of_life.refresh_cell(d['pos'], self.board)
                 self.assertEqual(d['expected'], new_cell_value)
 
     def testDeadWithLessThan2NeighboursAlive(self):
@@ -73,9 +72,9 @@ class TestMain(unittest.TestCase):
 
         cell_coord = (1, 1)
 
-        self.board[cell_coord[0]][cell_coord[1]] = main.refresh_cell(cell_coord, self.board)
+        self.board[cell_coord[0]][cell_coord[1]] = game_of_life.refresh_cell(cell_coord, self.board)
 
-        self.assertFalse(main.is_alive(cell_coord, self.board))
+        self.assertFalse(game_of_life.is_alive(cell_coord, self.board))
 
     def testAliveWith2NeighboursAliveKeepAlive(self):
         self.board[0] = [1, 1, 0]
@@ -84,9 +83,9 @@ class TestMain(unittest.TestCase):
 
         cell_coord = (1, 1)
 
-        self.board[cell_coord[0]][cell_coord[1]] = main.refresh_cell(cell_coord, self.board)
+        self.board[cell_coord[0]][cell_coord[1]] = game_of_life.refresh_cell(cell_coord, self.board)
 
-        self.assertTrue(main.is_alive(cell_coord, self.board))
+        self.assertTrue(game_of_life.is_alive(cell_coord, self.board))
 
     def testAliveWith3NeighboursAliveKeepAlive(self):
         self.board[0] = [1, 1, 0]
@@ -95,9 +94,9 @@ class TestMain(unittest.TestCase):
 
         cell_coord = (1, 1)
 
-        self.board[cell_coord[0]][cell_coord[1]] = main.refresh_cell(cell_coord, self.board)
+        self.board[cell_coord[0]][cell_coord[1]] = game_of_life.refresh_cell(cell_coord, self.board)
 
-        self.assertTrue(main.is_alive(cell_coord, self.board))
+        self.assertTrue(game_of_life.is_alive(cell_coord, self.board))
 
     def testAliveWithMoreThan3NeighboursAliveBecomeDead(self):
         self.board[0] = [1, 1, 1]
@@ -106,9 +105,9 @@ class TestMain(unittest.TestCase):
 
         cell_coord = (1, 1)
 
-        self.board[cell_coord[0]][cell_coord[1]] = main.refresh_cell(cell_coord, self.board)
+        self.board[cell_coord[0]][cell_coord[1]] = game_of_life.refresh_cell(cell_coord, self.board)
 
-        self.assertFalse(main.is_alive(cell_coord, self.board))
+        self.assertFalse(game_of_life.is_alive(cell_coord, self.board))
 
     def testDeadWith3NeighboursAliveBecomeAlive(self):
         self.board[0] = [1, 1, 0]
@@ -117,9 +116,9 @@ class TestMain(unittest.TestCase):
 
         cell_coord = (1, 1)
 
-        self.board[cell_coord[0]][cell_coord[1]] = main.refresh_cell(cell_coord, self.board)
+        self.board[cell_coord[0]][cell_coord[1]] = game_of_life.refresh_cell(cell_coord, self.board)
 
-        self.assertTrue(main.is_alive(cell_coord, self.board))
+        self.assertTrue(game_of_life.is_alive(cell_coord, self.board))
 
     def testIsValidCellReturnFalseWhenInvalidCell(self):
         self.board[0] = [1, 1, 0]
@@ -130,14 +129,14 @@ class TestMain(unittest.TestCase):
 
         for pos in positions_false:
             with self.subTest():
-                self.assertFalse(main.is_valid_cell(pos, self.board))
+                self.assertFalse(game_of_life.is_valid_cell(pos, self.board))
 
     def testIsValidCellReturnTrueWhenValidCell(self):
         self.board[0] = [1, 1, 0]
         self.board[1] = [0, 0, 0]
         self.board[2] = [0, 0, 1]
 
-        self.assertTrue(main.is_valid_cell((1, 1), self.board))
+        self.assertTrue(game_of_life.is_valid_cell((1, 1), self.board))
 
     def testRefreshBoard(self):
         step1 = [
@@ -152,7 +151,7 @@ class TestMain(unittest.TestCase):
             [0, 0, 0]
         ]
 
-        next_step = main.generate_next_generation(step1)
+        next_step = game_of_life.generate_next_generation(step1)
         self.assertEqual(next_step, step2)
 
     def testRefreshBoard2(self):
@@ -168,7 +167,7 @@ class TestMain(unittest.TestCase):
             [0, 0, 0]
         ]
 
-        next_step = main.generate_next_generation(step1)
+        next_step = game_of_life.generate_next_generation(step1)
         self.assertEqual(next_step, step2)
 
     def testRefreshBoard4(self):
@@ -184,7 +183,7 @@ class TestMain(unittest.TestCase):
             [0, 1, 0]
         ]
 
-        next_step = main.generate_next_generation(step1)
+        next_step = game_of_life.generate_next_generation(step1)
         self.assertEqual(next_step, step2)
 
 
