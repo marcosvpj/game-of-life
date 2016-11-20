@@ -2,24 +2,30 @@ import pygame
 from pygame.locals import *
 
 from game_of_life import build_board, generate_next_generation
-from structures import populate_board_with_example, place_acorn
+from structures import place_acorn
+
+
+def should_keep_running():
+    for event in pygame.event.get():
+        if is_exit_event(event):
+            return False
+    return True
 
 
 def is_exit_event(e):
-    if e.type == KEYDOWN and e.key == K_ESCAPE:
-        return True
+    def esc_key_pressed(e):
+        return e.type == KEYDOWN and e.key == K_ESCAPE
 
-    if e.type == QUIT:
-        return True
+    def exit_button_pressed(e):
+        return e.type == QUIT
 
-    return False
+    return esc_key_pressed(e) or exit_button_pressed(e)
 
 
-def draw_rectangle(color):
-    surf = pygame.Surface((15, 15))
-    surf.fill(color)
-    # rect = surf.get_rect()
-    return surf
+def draw_rectangle(c):
+    s = pygame.Surface((CELL_SIZE, CELL_SIZE))
+    s.fill(c)
+    return s
 
 
 def draw_dead():
@@ -30,32 +36,52 @@ def draw_alive():
     return draw_rectangle((125, 125, 125))
 
 
+def cell_size_in_pixels():
+    return CELL_SIZE + SPACE_BETWEEN_CELLS
+
+
+def size_for_n_cells(n):
+    return n * cell_size_in_pixels() + SPACE_BETWEEN_CELLS
+
+
+def draw_cell(cell):
+    surf = draw_dead()
+    if cell:
+        surf = draw_alive()
+
+    return surf
+
+
+def draw_board(b):
+    board_surface = pygame.Surface((BOARD_WIDTH_IN_PIXELS, BOARD_HEIGHT_IN_PIXELS))
+    for y in range(len(b)):
+        for x in range(len(b[y])):
+            surface = draw_cell(b[y][x])
+            board_surface.blit(surface, (size_for_n_cells(x), size_for_n_cells(y)))
+
+    return board_surface
+
+
+def setup_board():
+    b = build_board(height=BOARD_HEIGHT, width=BOARD_WIDTH)
+    place_acorn(b, (35, 17))
+
+    return b
+
+
+CELL_SIZE = 7
+SPACE_BETWEEN_CELLS = 1
+BOARD_WIDTH = 75
+BOARD_HEIGHT = 40
+BOARD_WIDTH_IN_PIXELS = size_for_n_cells(BOARD_WIDTH)
+BOARD_HEIGHT_IN_PIXELS = size_for_n_cells(BOARD_HEIGHT)
+
+board = setup_board()
+
+screen = pygame.display.set_mode((BOARD_WIDTH_IN_PIXELS, BOARD_HEIGHT_IN_PIXELS))
 pygame.init()
 
-WIDTH = 75
-width_in_pixels = WIDTH * (15 + 3) + 3
-HEIGHT = 40
-height_in_pixels = HEIGHT * (15 + 3) + 3
-
-screen = pygame.display.set_mode((width_in_pixels, height_in_pixels))
-running = True
-
-board = build_board(height=HEIGHT, width=WIDTH)
-# populate_board_with_example(board)
-place_acorn(board, (35, 17))
-
-while running:
-    for event in pygame.event.get():
-        if is_exit_event(event):
-            running = False
-
-    for y in range(len(board)):
-        for x in range(len(board[y])):
-            surf = draw_dead()
-            if board[y][x]:
-                surf = draw_alive()
-            screen.blit(surf, (x * (15 + 3) + 3, y * (15 + 3) + 3))
-
+while should_keep_running():
+    screen.blit(draw_board(board), (0, 0))
     board = generate_next_generation(board)
-
     pygame.display.flip()
