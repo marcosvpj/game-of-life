@@ -5,9 +5,8 @@ import game_of_life
 
 class TestMain(unittest.TestCase):
     def setUp(self):
-        w, h = 3, 3
+        self.board = game_of_life.build_board(3, 3)
 
-        self.board = [[0 for x in range(w)] for y in range(h)]
         self.board[0] = [0, 0, 0]
         self.board[1] = [0, 0, 0]
         self.board[2] = [0, 0, 0]
