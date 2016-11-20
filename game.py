@@ -1,5 +1,5 @@
 import pygame
-from pygame.locals import *
+from pygame.constants import QUIT, KEYDOWN, K_ESCAPE
 
 from game_of_life import build_board, generate_next_generation
 from structures import place_acorn
