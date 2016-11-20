@@ -24,3 +24,22 @@ def populate_board_with_example(board):
     board[9][7] = 1
     board[9][8] = 0
     board[9][9] = 1
+
+
+def place_acorn(board, position):
+    offset_x = position[0]
+    offset_y = position[1]
+    width = 9 + offset_x
+    height = 5 + offset_y
+
+    for y in range(height):
+        for x in range(width):
+            board[y][x] = 0
+
+    board[1 + offset_y][2 + offset_x] = 1
+    board[2 + offset_y][4 + offset_x] = 1
+    board[3 + offset_y][1 + offset_x] = 1
+    board[3 + offset_y][2 + offset_x] = 1
+    board[3 + offset_y][5 + offset_x] = 1
+    board[3 + offset_y][6 + offset_x] = 1
+    board[3 + offset_y][7 + offset_x] = 1
