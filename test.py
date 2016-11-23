@@ -12,16 +12,18 @@ class TestMain(unittest.TestCase):
         self.board[2] = [0, 0, 0]
 
     def testCountAlive(self):
-        self.board[0] = [1, 1, 0, 1, 1]
-        self.board[1] = [0, 0, 1, 1, 1]
-        self.board[2] = [0, 0, 0, 0, 1]
+        self.board = game_of_life.build_board(4, 3)
+        self.board[0] = [1, 1, 0, 1, 1, 0]
+        self.board[1] = [0, 0, 1, 1, 1, 0]
+        self.board[2] = [0, 0, 0, 0, 1, 0]
+        self.board[3] = [0, 0, 0, 0, 0, 0]
 
         data = [
-            {'expect': 2, 'position': (2, 2)},
-            {'expect': 1, 'position': (0, 0)},
-            {'expect': 4, 'position': (0, 2)},
             {'expect': 0, 'position': (2, 0)},
+            {'expect': 1, 'position': (0, 0)},
+            {'expect': 2, 'position': (2, 2)},
             {'expect': 3, 'position': (1, 1)},
+            {'expect': 4, 'position': (0, 2)},
         ]
 
         for d in data:
@@ -116,24 +118,6 @@ class TestMain(unittest.TestCase):
 
         self.assertTrue(game_of_life.is_alive(cell_coord, self.board))
 
-    def testIsValidCellReturnFalseWhenInvalidCell(self):
-        self.board[0] = [1, 1, 0]
-        self.board[1] = [0, 0, 0]
-        self.board[2] = [0, 0, 1]
-
-        positions_false = [(4, 1), (-1, 1), (1, 4), (1, -1), (3, 3)]
-
-        for pos in positions_false:
-            with self.subTest():
-                self.assertFalse(game_of_life.is_valid_cell(pos, self.board))
-
-    def testIsValidCellReturnTrueWhenValidCell(self):
-        self.board[0] = [1, 1, 0]
-        self.board[1] = [0, 0, 0]
-        self.board[2] = [0, 0, 1]
-
-        self.assertTrue(game_of_life.is_valid_cell((1, 1), self.board))
-
     def testRefreshBoard(self):
         step1 = [
             [0, 0, 0],
@@ -152,15 +136,17 @@ class TestMain(unittest.TestCase):
 
     def testRefreshBoard2(self):
         step1 = [
-            [0, 1, 0],
-            [1, 1, 0],
-            [0, 0, 0]
+            [0, 0, 0, 0, 0],
+            [0, 0, 1, 0, 0],
+            [0, 1, 1, 0, 0],
+            [0, 0, 0, 0, 0]
         ]
 
         step2 = [
-            [1, 1, 0],
-            [1, 1, 0],
-            [0, 0, 0]
+            [0, 0, 0, 0, 0],
+            [0, 1, 1, 0, 0],
+            [0, 1, 1, 0, 0],
+            [0, 0, 0, 0, 0]
         ]
 
         next_step = game_of_life.generate_next_generation(step1)
@@ -168,19 +154,51 @@ class TestMain(unittest.TestCase):
 
     def testRefreshBoard4(self):
         step1 = [
-            [0, 0, 0],
-            [1, 1, 1],
-            [0, 0, 0]
+            [0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0],
+            [0, 1, 1, 1, 0],
+            [0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0]
         ]
 
         step2 = [
-            [0, 1, 0],
-            [0, 1, 0],
-            [0, 1, 0]
+            [0, 0, 0, 0, 0],
+            [0, 0, 1, 0, 0],
+            [0, 0, 1, 0, 0],
+            [0, 0, 1, 0, 0],
+            [0, 0, 0, 0, 0]
         ]
 
         next_step = game_of_life.generate_next_generation(step1)
         self.assertEqual(next_step, step2)
+
+    def testCountAliveWithBoardContinuityUpDown(self):
+        self.board = [[0, 1, 0],
+                      [0, 0, 0],
+                      [0, 1, 0]]
+
+        self.assertEqual(game_of_life.count_alive((0, 1), self.board), 1)
+        self.assertEqual(game_of_life.count_alive((0, 2), self.board), 2)
+        self.assertEqual(game_of_life.count_alive((0, 0), self.board), 2)
+
+    def testCountAliveWithBoardContinuityLeftRight(self):
+        self.board = [[1, 0, 0],
+                      [0, 0, 0],
+                      [0, 0, 1]]
+
+        self.assertEqual(game_of_life.count_alive((0, 0), self.board), 1)
+        self.assertEqual(game_of_life.count_alive((1, 0), self.board), 2)
+        self.assertEqual(game_of_life.count_alive((2, 0), self.board), 2)
+
+    def testCountAliveWithBoardContinuityCorners(self):
+        self.board = [[1, 0, 1],
+                      [0, 0, 0],
+                      [1, 0, 1]]
+
+        self.assertEqual(game_of_life.count_alive((0, 0), self.board), 3)
+        self.assertEqual(game_of_life.count_alive((2, 0), self.board), 3)
+        self.assertEqual(game_of_life.count_alive((2, 0), self.board), 3)
+        self.assertEqual(game_of_life.count_alive((2, 2), self.board), 3)
 
 
 if __name__ == '__main__':
