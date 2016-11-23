@@ -13,41 +13,33 @@ def count_alive(coord, board):
 
 
 def calculate_valid_neighbors(board, coord):
-    upper_left = (coord[0] - 1 if coord[0] - 1 >= 0 else len(board) - 1,
-                  coord[1] - 1 if coord[1] - 1 >= 0 else len(board[coord[0]]) - 1)
+    top = coord[0] - 1
+    left = coord[1] - 1
+    right = coord[1] + 1
+    bottom = coord[0] + 1
 
-    upper_center = (coord[0] - 1 if coord[0] - 1 >= 0 else len(board) - 1,
-                    coord[1])
+    upper_left = (top if top >= 0 else len(board) - 1, left if left >= 0 else len(board[coord[0]]) - 1)
+    upper_center = (top if top >= 0 else len(board) - 1, coord[1])
+    upper_right = (top if top >= 0 else len(board) - 1, right if right < len(board[coord[0]]) else 0)
 
-    upper_right = (coord[0] - 1 if coord[0] - 1 >= 0 else len(board) - 1,
-                   coord[1] + 1 if coord[1] + 1 < len(board[coord[0]]) else 0)
+    middle_left = (coord[0], left if left >= 0 else len(board[coord[0]]) - 1)
+    middle_right = (coord[0], right if right < len(board[coord[0]]) else 0)
 
-    middle_left = (coord[0],
-                   coord[1] - 1 if coord[1] - 1 >= 0 else len(board[coord[0]]) - 1)
+    bottom_left = (bottom if bottom < len(board) else 0, left if left >= 0 else len(board[coord[0]]) - 1)
+    bottom_center = (bottom if bottom < len(board) else 0, coord[1])
+    bottom_right = (bottom if bottom < len(board) else 0, right if right < len(board[coord[0]]) else 0)
 
-    bottom_left = (coord[0] + 1 if coord[0] + 1 < len(board) else 0,
-                   coord[1] - 1 if coord[1] - 1 >= 0 else len(board[coord[0]]) - 1)
+    pos = [upper_left,
+           upper_center,
+           upper_right,
 
-    bottom_center = (coord[0] + 1 if coord[0] + 1 < len(board) else 0,
-                     coord[1])
+           middle_left,
+           middle_right,
 
-    bottom_right = (coord[0] + 1 if coord[0] + 1 < len(board) else 0,
-                    coord[1] + 1 if coord[1] + 1 < len(board[coord[0]]) else 0)
+           bottom_center,
+           bottom_left,
+           bottom_right]
 
-    middle_right = (coord[0],
-                    coord[1] + 1 if coord[1] + 1 < len(board[coord[0]]) else 0)
-    pos = [
-        upper_left,
-        upper_center,
-        upper_right,
-
-        middle_left,
-        middle_right,
-
-        bottom_center,
-        bottom_left,
-        bottom_right
-    ]
     return pos
 
 
