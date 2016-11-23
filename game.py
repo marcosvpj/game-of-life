@@ -2,7 +2,7 @@ import pygame
 from pygame.constants import QUIT, KEYDOWN, K_ESCAPE
 
 from game_of_life import build_board, generate_next_generation
-from structures import place_acorn
+import structures
 
 
 def should_keep_running():
@@ -64,15 +64,15 @@ def draw_board(b):
 
 def setup_board():
     b = build_board(height=BOARD_HEIGHT, width=BOARD_WIDTH)
-    place_acorn(b, (35, 17))
+    structures.place_acorn(b, (20, 20))
 
     return b
 
 
 CELL_SIZE = 7
 SPACE_BETWEEN_CELLS = 1
-BOARD_WIDTH = 75
-BOARD_HEIGHT = 40
+BOARD_WIDTH = 60
+BOARD_HEIGHT = 50
 BOARD_WIDTH_IN_PIXELS = size_for_n_cells(BOARD_WIDTH)
 BOARD_HEIGHT_IN_PIXELS = size_for_n_cells(BOARD_HEIGHT)
 
