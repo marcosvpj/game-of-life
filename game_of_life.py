@@ -5,22 +5,50 @@ def build_board(height, width):
 def count_alive(coord, board):
     alive = 0
 
-    pos = [
-        (coord[0], coord[1] - 1),
-        (coord[0], coord[1] + 1),
-        (coord[0] - 1, coord[1]),
-        (coord[0] - 1, coord[1] - 1),
-        (coord[0] - 1, coord[1] + 1),
-        (coord[0] + 1, coord[1]),
-        (coord[0] + 1, coord[1] - 1),
-        (coord[0] + 1, coord[1] + 1)
-    ]
-
-    for p in pos:
-        if is_valid_cell(p, board) and (is_alive(p, board)):
+    for p in calculate_valid_neighbors(board, coord):
+        if is_alive(p, board):
             alive += 1
 
     return alive
+
+
+def calculate_valid_neighbors(board, coord):
+    upper_left = (coord[0] - 1 if coord[0] - 1 >= 0 else len(board) - 1,
+                  coord[1] - 1 if coord[1] - 1 >= 0 else len(board[coord[0]]) - 1)
+
+    upper_center = (coord[0] - 1 if coord[0] - 1 >= 0 else len(board) - 1,
+                    coord[1])
+
+    upper_right = (coord[0] - 1 if coord[0] - 1 >= 0 else len(board) - 1,
+                   coord[1] + 1 if coord[1] + 1 < len(board[coord[0]]) else 0)
+
+    middle_left = (coord[0],
+                   coord[1] - 1 if coord[1] - 1 >= 0 else len(board[coord[0]]) - 1)
+
+    bottom_left = (coord[0] + 1 if coord[0] + 1 < len(board) else 0,
+                   coord[1] - 1 if coord[1] - 1 >= 0 else len(board[coord[0]]) - 1)
+
+    bottom_center = (coord[0] + 1 if coord[0] + 1 < len(board) else 0,
+                     coord[1])
+
+    bottom_right = (coord[0] + 1 if coord[0] + 1 < len(board) else 0,
+                    coord[1] + 1 if coord[1] + 1 < len(board[coord[0]]) else 0)
+
+    middle_right = (coord[0],
+                    coord[1] + 1 if coord[1] + 1 < len(board[coord[0]]) else 0)
+    pos = [
+        upper_left,
+        upper_center,
+        upper_right,
+
+        middle_left,
+        middle_right,
+
+        bottom_center,
+        bottom_left,
+        bottom_right
+    ]
+    return pos
 
 
 def is_alive(coord, board):
@@ -61,10 +89,6 @@ def refresh_cell(coord, board):
         new_status = 1
 
     return new_status
-
-
-def is_valid_cell(coord, board):
-    return len(board) > coord[0] >= 0 and len(board[coord[0]]) > coord[1] >= 0
 
 
 def generate_next_generation(board):
